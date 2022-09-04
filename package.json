@@ -1,0 +1,26 @@
+{
+  "name": "vote-api",
+  "version": "0.0.1",
+  "description": "API DO SISTEMA DE VOTAÇÃO",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hugoleoh/api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "author": "Hugo Leonardo da Mata Ribeiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hugoleoh/api/issues"
+  },
+  "homepage": "https://github.com/Hugoleoh/api#readme",
+  "devDependencies": {
+    "jest": "^29.0.2"
+  }
+}
