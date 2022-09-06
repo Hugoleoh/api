@@ -2,25 +2,24 @@ const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
 
-const Poll = sequelize.define("poll", {
+const Voter = sequelize.define("voter", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  title: {
+  vote_weight: {
+    type: Sequelize.INTEGER,
+  },
+  voter_key: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  initial_date: Sequelize.DATE,
-  end_date: Sequelize.DATE,
-  sharing_url: Sequelize.STRING,
-  description: Sequelize.STRING,
   activated: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
   },
 });
 
-module.exports = Poll;
+module.exports = Voter;
