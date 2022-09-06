@@ -1,20 +1,22 @@
 version: "3.3"
 
 services:
-  pollarDatabase:
+  pollar-database:
     image: mariadb
-    container_name: pollarDatabase
+    container_name: pollar-database
     restart: always
     env_file:
       - ./.env
     ports:
-      - '3306:3306'
+      - "3306:3306"
+    volumes:
+      - ./src/db/pollar.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
   app:
     container_name: app
     depends_on:
-      - pollarDatabase
+      - pollar-database
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,6 +28,6 @@ services:
     environment:
       - PORT=3000
     ports:
-      - '3000:3000'
+      - "3000:3000"
 networks:
   backend:
