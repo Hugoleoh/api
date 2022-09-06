@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const sequelize = require("./util/database");
+const database = require("./util/database");
 
 const app = express();
 
@@ -20,13 +20,9 @@ app.use((req, res, next) => {
 const pollRoutes = require("./routes/poll");
 app.use("/polls", pollRoutes);
 
-sequelize
-  .sync()
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+(async () => {
+   const Poll = require('./models/poll');
+   await database.sync();
+})();
 
 app.listen(3000);
