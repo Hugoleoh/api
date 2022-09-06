@@ -13,8 +13,8 @@ services:
       - ./src/db/pollar.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
-  app:
-    container_name: app
+  pollar-api:
+    container_name: pollar-api
     depends_on:
       - pollar-database
     build:
