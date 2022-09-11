@@ -22,7 +22,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/usr/src/app
-    restart: always
     networks:
       - backend
     environment:

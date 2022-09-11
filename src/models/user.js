@@ -9,13 +9,23 @@ const User = sequelize.define("user", {
     allowNull: false,
     primaryKey: true,
   },
-  name: {
+  username: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: true,
+  },
+  first_name: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  last_name: {
+    type: Sequelize.STRING,
+    allowNull: true,
   },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: true,
   },
   password: {
     type: Sequelize.STRING,
@@ -23,6 +33,11 @@ const User = sequelize.define("user", {
   },
   cpf: {
     type: Sequelize.STRING,
+    unique: true,
+  },
+  activated: {
+    type: Sequelize.BOOLEAN,
+    default: true,
   },
 });
 
