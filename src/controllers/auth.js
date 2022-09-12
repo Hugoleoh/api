@@ -75,7 +75,7 @@ exports.login = (req, res, next) => {
           username: found_user.username,
           userId: found_user.id.toString(),
         },
-        bcrypt.hashSync("PollarAPI", 12),
+        "1b93823c3837425690b259976639b5753644ca67",
         { expiresIn: "1h" }
       );
       res.status(200).json({ token: token, userId: found_user.id.toString() });

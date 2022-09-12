@@ -1,12 +1,16 @@
 const User = require("../models/user");
 
 exports.edit = (req, res, next) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Endpoint para editar um usuário.'
+  // #swagger.parameters['id'] = { description: 'ID do usuário.' }
+
   const userId = req.params.userId;
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const email = req.body.email;
 
-  User.findById(userId)
+  User.findByPk(userId)
     .then((user) => {
       if (!user) {
         const error = new Error("User not found.");
@@ -24,7 +28,7 @@ exports.edit = (req, res, next) => {
       return user.save();
     })
     .then((result) => {
-      res.status(200).json({ message: "User updated.", user: result });
+      res.status(200).json({ message: "User updated.", user: result.id });
     })
     .catch((err) => {
       if (!err.status_code) {
@@ -35,8 +39,13 @@ exports.edit = (req, res, next) => {
 };
 
 exports.getProfile = (req, res, next) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Endpoint para obter um usuário.'
+  // #swagger.parameters['id'] = { description: 'ID do usuário.' }
+
   const userId = req.params.userId;
-  User.findById(userId)
+  User.scope("withoutPassword")
+    .findByPk(userId)
     .then((user) => {
       if (!user) {
         const error = new Error("User not found.");

@@ -11,7 +11,10 @@ module.exports = (req, res, next) => {
   const token = header.split(" ")[1];
   let decoded_token;
   try {
-    decoded_token = jwt.verify(token, bcrypt.hashSync("PollarAPI", 12));
+    decoded_token = jwt.verify(
+      token,
+      "1b93823c3837425690b259976639b5753644ca67"
+    );
   } catch (err) {
     err.status_code = 500;
     throw err;
