@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const swaggerUI = require("swagger-ui-express"),
+  swaggerDocument = require("../swagger_output.json");
+
 const database = require("./util/database");
 
 const app = express();
@@ -17,33 +20,40 @@ app.use((req, res, next) => {
   next();
 });
 
-const Poll = require("./models/poll");
-const Option = require("./models/option");
-const Question = require("./models/question");
-const User = require("./models/user");
-const Vote = require("./models/vote");
-const Voter = require("./models/voter");
-
 const pollRoutes = require("./routes/poll");
 app.use("/polls", pollRoutes);
 
-Poll.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
-User.hasMany(Poll);
+const authRoutes = require("./routes/auth");
+app.use("/auth", authRoutes);
 
-Question.belongsTo(Poll, { constraints: true, onDelete: "CASCADE" });
-Poll.hasMany(Question);
-
-Option.belongsTo(Question, { constraints: true, onDelete: "CASCADE" });
-Question.hasMany(Option);
-
-Voter.belongsTo(Poll, { constraints: true, onDelete: "CASCADE" });
-Poll.hasMany(Voter);
-
-Vote.belongsTo(Option, { constraints: true, onDelete: "CASCADE" });
-Option.hasMany(Vote);
+const userRoutes = require("./routes/user");
+app.use("/users", userRoutes);
 
 (async () => {
-  await database.sync({ force: true });
+  const Poll = require("./models/poll");
+  const Option = require("./models/option");
+  const Question = require("./models/question");
+  const User = require("./models/user");
+  const Vote = require("./models/vote");
+  const Voter = require("./models/voter");
+
+  Poll.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+  User.hasMany(Poll);
+
+  Question.belongsTo(Poll, { constraints: true, onDelete: "CASCADE" });
+  Poll.hasMany(Question);
+
+  Option.belongsTo(Question, { constraints: true, onDelete: "CASCADE" });
+  Question.hasMany(Option);
+
+  Voter.belongsTo(Poll, { constraints: true, onDelete: "CASCADE" });
+  Poll.hasMany(Voter);
+
+  Vote.belongsTo(Option, { constraints: true, onDelete: "CASCADE" });
+  Option.hasMany(Vote);
+  await database.sync({});
 })();
+
+app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.listen(3000);
