@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const swaggerUI = require("swagger-ui-express"),
+  swaggerDocument = require("../swagger_output.json");
+
 const database = require("./util/database");
 
 const app = express();
@@ -50,5 +53,7 @@ app.use("/users", userRoutes);
   Option.hasMany(Vote);
   await database.sync({});
 })();
+
+app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.listen(3000);

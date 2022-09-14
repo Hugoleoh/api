@@ -6,6 +6,11 @@ const { Op } = require("sequelize");
 const User = require("../models/user");
 
 exports.register = (req, res, next) => {
+  // #swagger.start
+  // #swagger.path = '/auth/register'
+  // #swagger.method = 'post'
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'Endpoint para cadastrar um usuário.'
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed.");
@@ -43,9 +48,15 @@ exports.register = (req, res, next) => {
       }
       next(err);
     });
+  // #swagger.end
 };
 
 exports.login = (req, res, next) => {
+  // #swagger.start
+  // #swagger.path = '/auth/login'
+  // #swagger.method = 'post'
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'Endpoint para autenticar um usuário.'
   const login = req.body.login;
   const password = req.body.password;
 
@@ -86,4 +97,5 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
+  // #swagger.end
 };

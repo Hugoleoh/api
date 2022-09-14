@@ -1,9 +1,12 @@
 const User = require("../models/user");
 
 exports.edit = (req, res, next) => {
+  // #swagger.start
+  // #swagger.path = '/users/edit/{userId}'
   // #swagger.tags = ['Users']
+  // #swagger.method = 'put'
   // #swagger.description = 'Endpoint para editar um usuário.'
-  // #swagger.parameters['id'] = { description: 'ID do usuário.' }
+  // #swagger.parameters['userId'] = { description: 'ID do usuário.' }
 
   const userId = req.params.userId;
   const first_name = req.body.first_name;
@@ -36,12 +39,16 @@ exports.edit = (req, res, next) => {
       }
       next(err);
     });
+  // #swagger.end
 };
 
 exports.getProfile = (req, res, next) => {
+  // #swagger.start
+  // #swagger.path = '/users/profile/{userId}'
   // #swagger.tags = ['Users']
-  // #swagger.description = 'Endpoint para obter um usuário.'
-  // #swagger.parameters['id'] = { description: 'ID do usuário.' }
+  // #swagger.method = 'get'
+  // #swagger.description = 'Endpoint para buscar um usuário.'
+  // #swagger.parameters['userId'] = { description: 'ID do usuário.' }
 
   const userId = req.params.userId;
   User.scope("withoutPassword")
@@ -60,4 +67,5 @@ exports.getProfile = (req, res, next) => {
       }
       next(err);
     });
+  // #swagger.end
 };
