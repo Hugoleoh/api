@@ -39,7 +39,7 @@ const User = sequelize.define(
     },
     activated: {
       type: Sequelize.BOOLEAN,
-      default: true,
+      defaultValue: true,
     },
   },
   {

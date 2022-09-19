@@ -26,7 +26,7 @@ const Question = sequelize.define("question", {
   },
   activated: {
     type: Sequelize.BOOLEAN,
-    allowNull: false,
+    defaultValue: true,
   },
 });
 
