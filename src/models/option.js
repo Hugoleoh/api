@@ -23,7 +23,7 @@ const Option = sequelize.define("option", {
   },
   activated: {
     type: Sequelize.BOOLEAN,
-    allowNull: false,
+    defaultValue: true,
   },
 });
 
