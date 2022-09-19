@@ -106,6 +106,115 @@
           }
         }
       }
+    },
+    "/polls/all": {
+      "get": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para mostrar todas votações de um usuário.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/polls/getPoll/{pollId}": {
+      "get": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para buscar uma votações.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/polls/create": {
+      "post": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para criar uma votação.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/polls/edit/{pollId}": {
+      "put": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para editar uma votação.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/polls/delete/{pollId}": {
+      "delete": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para deletar uma votação.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/polls/start/{pollId}": {
+      "patch": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para abrir uma votação para votos.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/polls/finish/{pollId}": {
+      "patch": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para fechar uma votação para votos.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
     }
   },
   "definitions": {
