@@ -17,9 +17,17 @@ const Poll = sequelize.define("poll", {
   end_date: Sequelize.DATE,
   sharing_url: Sequelize.STRING,
   description: Sequelize.STRING,
+  started: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  finished: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
   activated: {
     type: Sequelize.BOOLEAN,
-    allowNull: false,
+    defaultValue: true,
   },
 });
 
