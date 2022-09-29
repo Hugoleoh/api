@@ -6,13 +6,27 @@ const { Op } = require("sequelize");
 const User = require("../models/user");
 
 exports.register = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/auth/register'
-  // #swagger.method = 'post'
-  // #swagger.tags = ['Auth']
-  // #swagger.description = 'Endpoint para cadastrar um usuário.'
+  /* #swagger.start
+  #swagger.path = '/auth/register'
+  #swagger.method = 'post'
+  #swagger.tags = ['Auth']
+  #swagger.description = 'Endpoint para cadastrar um usuário.' 
+  #swagger.parameters['user'] = {
+    in: 'body',
+    description: 'Informações do usuário.',
+    required: true,
+    schema: { 
+      $ref: "#/definitions/user" 
+    }
+  }
+   */
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    /* 
+          #swagger.responses[422] = { 
+          description: 'Falha na validação' 
+        }  
+      */
     const error = new Error("Validation failed.");
     error.statusCode = 422;
     error.data = errors.array();
@@ -38,13 +52,26 @@ exports.register = (req, res, next) => {
       return user.save();
     })
     .then((result) => {
+      /* 
+        #swagger.responses[201] = { 
+          schema: { 
+            userId: 1
+          }
+          description: 'Usuário criado.' 
+        }  
+      */
       res
         .status(201)
         .json({ message: "User registered successfully", userId: result.id });
     })
     .catch((err) => {
-      if (!err.status_code) {
-        err.status_code = 500;
+      /* 
+          #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+        */
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -52,11 +79,21 @@ exports.register = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/auth/login'
-  // #swagger.method = 'post'
-  // #swagger.tags = ['Auth']
-  // #swagger.description = 'Endpoint para autenticar um usuário.'
+  /*  #swagger.start
+    #swagger.path = '/auth/login'
+    #swagger.method = 'post'
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Endpoint para autenticar um usuário.'
+    #swagger.parameters['user'] = {
+      in: 'body',
+      description: 'Informações de login do usuário.',
+      required: true,
+      schema: { 
+        login: 'username/email',
+        password: 'secret', 
+      }
+    }
+  */
   const login = req.body.login;
   const password = req.body.password;
 
@@ -68,8 +105,13 @@ exports.login = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Usuário não encontrado.' 
+        }  
+        */
         const error = new Error("User not found.");
-        error.status_code = 401;
+        error.statusCode = 404;
         throw error;
       }
       found_user = user;
@@ -77,8 +119,13 @@ exports.login = (req, res, next) => {
     })
     .then((isEqual) => {
       if (isEqual) {
+        /* 
+          #swagger.responses[401] = { 
+          description: 'Não autorizado' 
+        }  
+        */
         const error = new Error("Wrong password.");
-        error.status_code = 401;
+        error.statusCode = 401;
         throw error;
       }
       const token = jwt.sign(
@@ -87,13 +134,27 @@ exports.login = (req, res, next) => {
           userId: found_user.id.toString(),
         },
         "1b93823c3837425690b259976639b5753644ca67",
-        { expiresIn: "1h" }
+        { expiresIn: "1000h" }
       );
+      /* 
+          #swagger.responses[200] = { 
+          schema: {
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+            userID: 1  
+          },
+          description: 'Usuário autenticado.' 
+        }  
+        */
       res.status(200).json({ token: token, userId: found_user.id.toString() });
     })
     .catch((err) => {
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        /* 
+          #swagger.responses[500] = { 
+          description: 'Server Error' 
+        }  
+        */
+        err.statusCode = 500;
       }
       next(err);
     });

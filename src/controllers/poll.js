@@ -1,21 +1,40 @@
 const Poll = require("../models/poll");
 
 exports.getAllMyPolls = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/all'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'get'
-  // #swagger.description = 'Endpoint para mostrar todas votações de um usuário.'
+  /* #swagger.start
+    #swagger.path = '/polls/all'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'get'
+    #swagger.description = 'Endpoint para mostrar todas votações de um usuário.' 
+  */
   Poll.findAll({ where: { userId: req.userId, activated: true } })
     .then((polls) => {
       if (!polls) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not found.");
         error.status_code = 404;
         throw error;
       }
+      /* 
+          #swagger.responses[200] = { 
+          schema: {
+           $ref: "#/definitions/poll"   
+          },
+          description: 'Votações buscadas.' 
+        }  
+      */
       res.status(200).json({ message: "Polls fetched.", polls: polls });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err) {
         err.status_code = 500;
       }
@@ -25,11 +44,13 @@ exports.getAllMyPolls = (req, res, next) => {
 };
 
 exports.getPoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/getPoll/{pollId}'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'get'
-  // #swagger.description = 'Endpoint para buscar uma votações.
+  /* #swagger.start
+    #swagger.path = '/polls/getPoll/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'get'
+    #swagger.description = 'Endpoint para buscar uma votações.
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
   const pollId = req.params.pollId;
   Poll.findOne({
     where: {
@@ -39,13 +60,31 @@ exports.getPoll = (req, res, next) => {
   })
     .then((polls) => {
       if (!polls) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not found.");
         error.status_code = 404;
         throw error;
       }
-      res.status(200).json({ message: "Polls fetched.", polls: polls });
+      /* 
+          #swagger.responses[200] = { 
+          schema: {
+           $ref: "#/definitions/poll"   
+          },
+          description: 'Votação buscada.' 
+        }  
+      */
+      res.status(200).json({ message: "Poll fetched.", polls: polls });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err) {
         err.status_code = 500;
       }
@@ -55,17 +94,31 @@ exports.getPoll = (req, res, next) => {
 };
 
 exports.createPoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/create'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'post'
-  // #swagger.description = 'Endpoint para criar uma votação.'
+  /* #swagger.start
+    #swagger.path = '/polls/create'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'post'
+    #swagger.description = 'Endpoint para criar uma votação.'
+    #swagger.parameters['poll'] = {
+    in: 'body',
+    description: 'Informações da votação.',
+    required: true,
+    schema: { 
+      $ref: "#/definitions/poll" 
+    }
+  } 
+  */
   const title = req.body.title;
   const initial_date = req.body.initial_date;
   const end_date = req.body.end_date;
   const description = req.body.description;
   const userId = req.body.userId;
   if (userId != req.userId) {
+    /* 
+      #swagger.responses[403] = { 
+        description: 'Não autorizado' 
+      }  
+    */
     const error = new Error("Forbidden.");
     error.status_code = 403;
     throw error;
@@ -78,11 +131,24 @@ exports.createPoll = (req, res, next) => {
     userId: userId,
   })
     .then((result) => {
+      /* 
+        #swagger.responses[201] = { 
+          schema: { 
+            $ref: "#/definitions/poll" 
+          }
+          description: 'Votação criado.' 
+        }  
+      */
       res
         .status(201)
         .json({ message: "Poll created successfully.", poll: result });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err) {
         err.status_code = 500;
       }
@@ -92,11 +158,20 @@ exports.createPoll = (req, res, next) => {
 };
 
 exports.editPoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/edit/{pollId}'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'put'
-  // #swagger.description = 'Endpoint para editar uma votação.'
+  /* #swagger.start
+    #swagger.path = '/polls/edit/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'put'
+    #swagger.description = 'Endpoint para editar uma votação.'
+    #swagger.parameters['poll'] = {
+      in: 'body',
+      description: 'Informações da votação.',
+      required: true,
+      schema: { 
+        $ref: "#/definitions/poll" 
+      }
+    }   
+  */
   const pollId = req.params.pollId;
   const title = req.body.title;
   const initial_date = req.body.initial_date;
@@ -111,16 +186,31 @@ exports.editPoll = (req, res, next) => {
   })
     .then((poll) => {
       if (!poll) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not find.");
         error.status_code = 404;
         throw error;
       }
       if (poll.started) {
+        /* 
+          #swagger.responses[422] = { 
+          description: 'Não é possível editar uma votação iniciada.' 
+        }  
+        */
         const error = new Error("Can't edit already started polls.");
         error.status_code = 422;
         throw error;
       }
       if (poll.userId != req.userId) {
+        /* 
+          #swagger.responses[403] = { 
+            description: 'Não autorizado' 
+          }  
+        */
         const error = new Error("Forbidden.");
         error.status_code = 403;
         throw error;
@@ -132,11 +222,24 @@ exports.editPoll = (req, res, next) => {
       return poll.save();
     })
     .then((result) => {
+      /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/poll" 
+          }
+          description: 'Votação editado.' 
+        }  
+      */
       res
         .status(200)
-        .json({ message: "Poll created successfully.", poll: result });
+        .json({ message: "Poll edited successfully.", poll: result });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err.status_code) {
         err.status_code = 500;
       }
@@ -146,11 +249,13 @@ exports.editPoll = (req, res, next) => {
 };
 
 exports.deletePoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/delete/{pollId}'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'delete'
-  // #swagger.description = 'Endpoint para deletar uma votação.'
+  /*  #swagger.start
+    #swagger.path = '/polls/delete/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'delete'
+    #swagger.description = 'Endpoint para deletar uma votação.' 
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
   const pollId = req.params.pollId;
   Poll.findOne({
     where: {
@@ -160,11 +265,21 @@ exports.deletePoll = (req, res, next) => {
   })
     .then((poll) => {
       if (!poll) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not find.");
         error.status_code = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
+        /* 
+          #swagger.responses[403] = { 
+            description: 'Não autorizado' 
+          }  
+        */
         const error = new Error("Forbidden.");
         error.status_code = 403;
         throw error;
@@ -173,11 +288,24 @@ exports.deletePoll = (req, res, next) => {
       poll.save();
     })
     .then((result) => {
+      /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/poll" 
+          }
+          description: 'Votação deletado.' 
+        }  
+      */
       res
         .status(200)
         .json({ message: "Poll deleted successfully.", poll: result });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err.status_code) {
         err.status_code = 500;
       }
@@ -187,11 +315,13 @@ exports.deletePoll = (req, res, next) => {
 };
 
 exports.startPoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/start/{pollId}'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'patch'
-  // #swagger.description = 'Endpoint para abrir uma votação para votos.'
+  /* #swagger.start
+    #swagger.path = '/polls/start/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'patch'
+    #swagger.description = 'Endpoint para abrir uma votação para votos.' 
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
   const pollId = req.params.pollId;
   Poll.findOne({
     where: {
@@ -201,16 +331,31 @@ exports.startPoll = (req, res, next) => {
   })
     .then((poll) => {
       if (!poll) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not find.");
         error.status_code = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
+        /* 
+          #swagger.responses[403] = { 
+            description: 'Não autorizado' 
+          }  
+        */
         const error = new Error("Forbidden.");
         error.status_code = 403;
         throw error;
       }
       if (poll.started || poll.finished) {
+        /* 
+          #swagger.responses[422] = { 
+          description: 'Não é possível editar uma votação iniciada.' 
+        }  
+        */
         const error = new Error("Cannot start a poll in progress or finished.");
         error.status_code = 422;
         throw error;
@@ -220,11 +365,24 @@ exports.startPoll = (req, res, next) => {
       poll.save();
     })
     .then((result) => {
+      /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/poll" 
+          }
+          description: 'Votação inciada.' 
+        }  
+      */
       res
         .status(200)
         .json({ message: "Poll started successfully.", poll: result });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err.status_code) {
         err.status_code = 500;
       }
@@ -234,11 +392,13 @@ exports.startPoll = (req, res, next) => {
 };
 
 exports.finishPoll = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/polls/finish/{pollId}'
-  // #swagger.tags = ['Polls']
-  // #swagger.method = 'patch'
-  // #swagger.description = 'Endpoint para fechar uma votação para votos.'
+  /* #swagger.start
+    #swagger.path = '/polls/finish/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'patch'
+    #swagger.description = 'Endpoint para fechar uma votação para votos.' 
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
   const pollId = req.params.pollId;
   Poll.findOne({
     where: {
@@ -248,16 +408,31 @@ exports.finishPoll = (req, res, next) => {
   })
     .then((poll) => {
       if (!poll) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
         const error = new Error("Poll not find.");
         error.status_code = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
+        /* 
+          #swagger.responses[403] = { 
+            description: 'Não autorizado' 
+          }  
+        */
         const error = new Error("Forbidden.");
         error.status_code = 403;
         throw error;
       }
       if (!poll.started || poll.finished) {
+        /* 
+          #swagger.responses[422] = { 
+            description: 'Não é possível editar uma votação iniciada.' 
+          }  
+        */
         const error = new Error("Cannot start a poll in progress or finished.");
         error.status_code = 422;
         throw error;
@@ -267,11 +442,24 @@ exports.finishPoll = (req, res, next) => {
       poll.save();
     })
     .then((result) => {
+      /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/poll" 
+          }
+          description: 'Votação finalizada.' 
+        }  
+      */
       res
         .status(200)
         .json({ message: "Poll finished successfully.", poll: result });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err.status_code) {
         err.status_code = 500;
       }

@@ -1,12 +1,23 @@
 const User = require("../models/user");
 
 exports.edit = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/users/edit/{userId}'
-  // #swagger.tags = ['Users']
-  // #swagger.method = 'put'
-  // #swagger.description = 'Endpoint para editar um usuário.'
-  // #swagger.parameters['userId'] = { description: 'ID do usuário.' }
+  /*  #swagger.start
+  #swagger.path = '/users/edit/{userId}'
+  #swagger.tags = ['Users']
+  #swagger.method = 'put'
+  #swagger.description = 'Endpoint para editar um usuário.'
+  #swagger.parameters['userId'] = { description: 'ID do usuário.' } 
+  #swagger.parameters['user'] = {
+    in: 'body',
+    description: 'Informações do usuário.',
+    required: true,
+    schema: { 
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'johndoe@email.com'
+    }
+  }
+  */
 
   const userId = req.params.userId;
   const first_name = req.body.first_name;
@@ -16,11 +27,21 @@ exports.edit = (req, res, next) => {
   User.findByPk(userId)
     .then((user) => {
       if (!user) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Usuário não encontrado.' 
+        }  
+        */
         const error = new Error("User not found.");
         error.status_code = 404;
         throw error;
       }
       if (user.id != req.userId) {
+        /* 
+          #swagger.responses[403] = { 
+          description: 'Não autorizado' 
+        }  
+        */
         const error = new Error("Forbidden.");
         error.status_code = 403;
         throw error;
@@ -31,9 +52,22 @@ exports.edit = (req, res, next) => {
       return user.save();
     })
     .then((result) => {
-      res.status(200).json({ message: "User updated.", user: result.id });
+      /* 
+          #swagger.responses[200] = { 
+          schema: {
+            userId: 1  
+          },
+          description: 'Usuário editado.' 
+        }  
+      */
+      res.status(200).json({ message: "User updated.", userId: result.id });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err.status_code) {
         err.status_code = 500;
       }
@@ -43,25 +77,44 @@ exports.edit = (req, res, next) => {
 };
 
 exports.getProfile = (req, res, next) => {
-  // #swagger.start
-  // #swagger.path = '/users/profile/{userId}'
-  // #swagger.tags = ['Users']
-  // #swagger.method = 'get'
-  // #swagger.description = 'Endpoint para buscar um usuário.'
-  // #swagger.parameters['userId'] = { description: 'ID do usuário.' }
+  /* #swagger.start
+    #swagger.path = '/users/profile/{userId}'
+    #swagger.tags = ['Users']
+    #swagger.method = 'get'
+    #swagger.description = 'Endpoint para buscar um usuário.'
+    #swagger.parameters['userId'] = { description: 'ID do usuário.' } 
+  */
 
   const userId = req.params.userId;
   User.scope("withoutPassword")
     .findByPk(userId)
     .then((user) => {
       if (!user) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Usuário não encontrado.' 
+        }  
+        */
         const error = new Error("User not found.");
         error.status_code = 404;
         throw error;
       }
+      /* 
+          #swagger.responses[200] = { 
+          schema: {
+           $ref: "#/definitions/user"   
+          },
+          description: 'Usuário buscado.' 
+        }  
+      */
       res.status(200).json({ message: "User fetched.", user: user });
     })
     .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
       if (!err) {
         err.status_code = 500;
       }

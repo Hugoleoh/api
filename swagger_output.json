@@ -45,8 +45,22 @@
           "Auth"
         ],
         "description": "Endpoint para cadastrar um usuário.",
-        "parameters": [],
-        "responses": {}
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Falha na validação"
+          }
+        }
       }
     },
     "/auth/login": {
@@ -55,10 +69,55 @@
           "Auth"
         ],
         "description": "Endpoint para autenticar um usuário.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Informações de login do usuário.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string",
+                  "example": "username/email"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "secret"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuário autenticado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                },
+                "userID": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
@@ -76,11 +135,55 @@
             "required": true,
             "type": "string",
             "description": "ID do usuário."
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "johndoe@email.com"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuário editado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -102,7 +205,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuário buscado.",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -116,7 +228,16 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Votações buscadas.",
+            "schema": {
+              "$ref": "#/definitions/poll"
+            }
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -132,10 +253,24 @@
             "name": "pollId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID da votação."
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/poll"
+            },
+            "description": "Votação buscada."
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
       }
     },
     "/polls/create": {
@@ -144,8 +279,22 @@
           "Polls"
         ],
         "description": "Endpoint para criar uma votação.",
-        "parameters": [],
-        "responses": {}
+        "parameters": [
+          {
+            "name": "poll",
+            "in": "body",
+            "description": "Informações da votação.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/poll"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          }
+        }
       }
     },
     "/polls/edit/{pollId}": {
@@ -160,9 +309,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "poll",
+            "in": "body",
+            "description": "Informações da votação.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/poll"
+            }
           }
         ],
-        "responses": {}
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "422": {
+            "description": "Não é possível editar uma votação iniciada."
+          }
+        }
       }
     },
     "/polls/delete/{pollId}": {
@@ -176,10 +344,18 @@
             "name": "pollId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID da votação."
           }
         ],
-        "responses": {}
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          }
+        }
       }
     },
     "/polls/start/{pollId}": {
@@ -193,10 +369,21 @@
             "name": "pollId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID da votação."
           }
         ],
-        "responses": {}
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "422": {
+            "description": "Não é possível editar uma votação iniciada."
+          }
+        }
       }
     },
     "/polls/finish/{pollId}": {
@@ -210,10 +397,21 @@
             "name": "pollId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID da votação."
           }
         ],
-        "responses": {}
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "422": {
+            "description": "Não é possível editar uma votação iniciada."
+          }
+        }
       }
     }
   },
@@ -250,6 +448,67 @@
           "example": "12345678901"
         },
         "activated": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        }
+      }
+    },
+    "Poll": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "teste"
+        },
+        "initial_date": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "end_date": {
+          "type": "string",
+          "example": "2022-01-02 00:00:00"
+        },
+        "sharing_url": {
+          "type": "string",
+          "example": "/s9Xjk23Ac"
+        },
+        "description": {
+          "type": "string",
+          "example": "Descrição"
+        },
+        "started": {
+          "type": "number",
+          "example": 0
+        },
+        "finished": {
+          "type": "number",
+          "example": 0
+        },
+        "activated": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "userId": {
           "type": "number",
           "example": 1
         }
