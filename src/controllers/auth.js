@@ -115,28 +115,30 @@ exports.login = (req, res, next) => {
         throw error;
       }
       found_user = user;
-      bcrypt.compare(password, user.password);
-    })
-    .then((isEqual) => {
-      if (isEqual) {
-        /* 
+      console.log(password, user.password);
+      bcrypt
+        .compare(password, user.password)
+        .then((isEqual) => {
+          console.log(isEqual);
+          if (!isEqual) {
+            /* 
           #swagger.responses[401] = { 
           description: 'Não autorizado' 
         }  
         */
-        const error = new Error("Wrong password.");
-        error.statusCode = 401;
-        throw error;
-      }
-      const token = jwt.sign(
-        {
-          username: found_user.username,
-          userId: found_user.id.toString(),
-        },
-        "1b93823c3837425690b259976639b5753644ca67",
-        { expiresIn: "1000h" }
-      );
-      /* 
+            const error = new Error("Wrong password.");
+            error.statusCode = 401;
+            throw error;
+          }
+          const token = jwt.sign(
+            {
+              username: found_user.username,
+              userId: found_user.id.toString(),
+            },
+            "1b93823c3837425690b259976639b5753644ca67",
+            { expiresIn: "1000h" }
+          );
+          /* 
           #swagger.responses[200] = { 
           schema: {
             token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
@@ -145,7 +147,21 @@ exports.login = (req, res, next) => {
           description: 'Usuário autenticado.' 
         }  
         */
-      res.status(200).json({ token: token, userId: found_user.id.toString() });
+          res
+            .status(200)
+            .json({ token: token, userId: found_user.id.toString() });
+        })
+        .catch((err) => {
+          if (!err.statusCode) {
+            /* 
+          #swagger.responses[500] = { 
+          description: 'Server Error' 
+        }  
+        */
+            err.statusCode = 500;
+          }
+          next(err);
+        });
     })
     .catch((err) => {
       if (!err.statusCode) {
