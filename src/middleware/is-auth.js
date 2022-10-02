@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
   const header = req.get("Authorization");
   if (!header) {
     const error = new Error("No headers in request");
-    error.status_code = 401;
+    error.statusCode = 401;
     throw error;
   }
   const token = header.split(" ")[1];
@@ -16,12 +16,12 @@ module.exports = (req, res, next) => {
       "1b93823c3837425690b259976639b5753644ca67"
     );
   } catch (err) {
-    err.status_code = 500;
+    err.statusCode = 500;
     throw err;
   }
   if (!decoded_token) {
     const error = new Error("Not authenticated.");
-    error.status_code = 401;
+    error.statusCode = 401;
     throw error;
   }
   req.userId = decoded_token.userId;
