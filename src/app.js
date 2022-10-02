@@ -56,4 +56,10 @@ app.use("/users", userRoutes);
 
 app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
+app.use((error, req, res, next) => {
+  res
+    .status(error.statusCode)
+    .json({ message: error.message || "Internal server error" });
+});
+
 app.listen(3000);

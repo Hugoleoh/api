@@ -38,19 +38,6 @@ exports.register = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const cpf = req.body.cpf;
-
-  /* const emailTaken = User.findOne({ where: { email: email } });
-  if(emailTaken){
-     const error = new Error("Email already taken.");
-     error.statusCode = 409;
-     throw error;
-  }
-  const usernameTaken = User.findOne({ where: { username: username } });
-  if (usernameTaken) {
-    const error = new Error("Username already taken.");
-    error.statusCode = 409;
-    throw error;
-  } */
   bcrypt
     .hash(password, 12)
     .then((hashed_password) => {
