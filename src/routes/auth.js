@@ -1,14 +1,18 @@
 const express = require("express");
 const { body } = require("express-validator");
 
-const User = require("../models/user");
 const authController = require("../controllers/auth");
+
+const middleAuth = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
 router.post(
   "/register",
   [body("password").trim().isLength({ min: 6 })],
+  middleAuth.checkEmailAvailability,
+  middleAuth.checkUsernameAvailability,
+  middleAuth.checkCpfAvailability,
   authController.register
 );
 

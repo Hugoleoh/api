@@ -38,6 +38,19 @@ exports.register = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const cpf = req.body.cpf;
+
+  /* const emailTaken = User.findOne({ where: { email: email } });
+  if(emailTaken){
+     const error = new Error("Email already taken.");
+     error.statusCode = 409;
+     throw error;
+  }
+  const usernameTaken = User.findOne({ where: { username: username } });
+  if (usernameTaken) {
+    const error = new Error("Username already taken.");
+    error.statusCode = 409;
+    throw error;
+  } */
   bcrypt
     .hash(password, 12)
     .then((hashed_password) => {
@@ -60,9 +73,19 @@ exports.register = (req, res, next) => {
           description: 'Usuário criado.' 
         }  
       */
-      res
-        .status(201)
-        .json({ message: "User registered successfully", userId: result.id });
+      const token = jwt.sign(
+        {
+          username: result.username,
+          userId: result.id.toString(),
+        },
+        "1b93823c3837425690b259976639b5753644ca67",
+        { expiresIn: "1000h" }
+      );
+      res.status(201).json({
+        message: "User registered successfully",
+        userId: result.id,
+        token: token,
+      });
     })
     .catch((err) => {
       /* 
