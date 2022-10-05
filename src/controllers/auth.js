@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const ONE_HOUR = 3600000;
+const ONE_YEAR = 31557600000;
 
 const User = require("../models/user");
 
@@ -140,13 +142,14 @@ exports.login = (req, res, next) => {
             error.statusCode = 401;
             throw error;
           }
+          const expiresIn = ONE_YEAR;
           const token = jwt.sign(
             {
               username: found_user.username,
               userId: found_user.id.toString(),
             },
             "1b93823c3837425690b259976639b5753644ca67",
-            { expiresIn: "1000h" }
+            { expiresIn: expiresIn }
           );
           /* 
           #swagger.responses[200] = { 
@@ -157,9 +160,12 @@ exports.login = (req, res, next) => {
           description: 'Usuário autenticado.' 
         }  
         */
-          res
-            .status(200)
-            .json({ token: token, userId: found_user.id.toString() });
+          res.status(200).json({
+            token: token,
+            userId: found_user.id.toString(),
+            createdAt: new Date(),
+            expiresIn: expiresIn,
+          });
         })
         .catch((err) => {
           if (!err.statusCode) {
