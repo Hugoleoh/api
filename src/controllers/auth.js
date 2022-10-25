@@ -125,11 +125,10 @@ exports.login = (req, res, next) => {
         throw error;
       }
       found_user = user;
-      console.log(password, user.password);
+
       bcrypt
         .compare(password, user.password)
         .then((isEqual) => {
-          console.log(isEqual);
           if (!isEqual) {
             /* 
           #swagger.responses[401] = { 

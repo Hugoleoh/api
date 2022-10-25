@@ -33,7 +33,7 @@ exports.edit = (req, res, next) => {
         }  
         */
         const error = new Error("User not found.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       if (user.id != req.userId) {
@@ -43,7 +43,7 @@ exports.edit = (req, res, next) => {
         }  
         */
         const error = new Error("Forbidden.");
-        error.status_code = 403;
+        error.statusCode = 403;
         throw error;
       }
       user.first_name = first_name;
@@ -68,8 +68,8 @@ exports.edit = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -96,7 +96,7 @@ exports.getProfile = (req, res, next) => {
         }  
         */
         const error = new Error("User not found.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       /* 
@@ -115,8 +115,8 @@ exports.getProfile = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });

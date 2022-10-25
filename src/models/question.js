@@ -14,7 +14,7 @@ const Question = sequelize.define("question", {
     allowNull: false,
   },
   type: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   description: {

@@ -23,6 +23,9 @@ app.use((req, res, next) => {
 const pollRoutes = require("./routes/poll");
 app.use("/polls", pollRoutes);
 
+const questionRoutes = require("./routes/question");
+app.use("/questions", questionRoutes);
+
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
 

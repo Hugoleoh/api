@@ -16,7 +16,7 @@ exports.getAllMyPolls = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not found.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       /* 
@@ -35,8 +35,8 @@ exports.getAllMyPolls = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -66,7 +66,7 @@ exports.getPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not found.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       /* 
@@ -85,8 +85,8 @@ exports.getPoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -120,7 +120,7 @@ exports.createPoll = (req, res, next) => {
       }  
     */
     const error = new Error("Forbidden.");
-    error.status_code = 403;
+    error.statusCode = 403;
     throw error;
   }
   Poll.create({
@@ -149,8 +149,8 @@ exports.createPoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -192,7 +192,7 @@ exports.editPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not find.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       if (poll.started) {
@@ -202,7 +202,7 @@ exports.editPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Can't edit already started polls.");
-        error.status_code = 422;
+        error.statusCode = 422;
         throw error;
       }
       if (poll.userId != req.userId) {
@@ -212,7 +212,7 @@ exports.editPoll = (req, res, next) => {
           }  
         */
         const error = new Error("Forbidden.");
-        error.status_code = 403;
+        error.statusCode = 403;
         throw error;
       }
       poll.title = title;
@@ -240,8 +240,8 @@ exports.editPoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -271,7 +271,7 @@ exports.deletePoll = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not find.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
@@ -281,7 +281,7 @@ exports.deletePoll = (req, res, next) => {
           }  
         */
         const error = new Error("Forbidden.");
-        error.status_code = 403;
+        error.statusCode = 403;
         throw error;
       }
       poll.activated = false;
@@ -306,8 +306,8 @@ exports.deletePoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -337,7 +337,7 @@ exports.startPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not find.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
@@ -347,7 +347,7 @@ exports.startPoll = (req, res, next) => {
           }  
         */
         const error = new Error("Forbidden.");
-        error.status_code = 403;
+        error.statusCode = 403;
         throw error;
       }
       if (poll.started || poll.finished) {
@@ -357,7 +357,7 @@ exports.startPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Cannot start a poll in progress or finished.");
-        error.status_code = 422;
+        error.statusCode = 422;
         throw error;
       }
       poll.initial_date = new Date();
@@ -383,8 +383,8 @@ exports.startPoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });
@@ -414,7 +414,7 @@ exports.finishPoll = (req, res, next) => {
         }  
         */
         const error = new Error("Poll not find.");
-        error.status_code = 404;
+        error.statusCode = 404;
         throw error;
       }
       if (poll.userId != req.userId) {
@@ -424,7 +424,7 @@ exports.finishPoll = (req, res, next) => {
           }  
         */
         const error = new Error("Forbidden.");
-        error.status_code = 403;
+        error.statusCode = 403;
         throw error;
       }
       if (!poll.started || poll.finished) {
@@ -434,7 +434,7 @@ exports.finishPoll = (req, res, next) => {
           }  
         */
         const error = new Error("Cannot start a poll in progress or finished.");
-        error.status_code = 422;
+        error.statusCode = 422;
         throw error;
       }
       poll.end_date = new Date();
@@ -460,8 +460,8 @@ exports.finishPoll = (req, res, next) => {
           description: 'Server error' 
         }  
       */
-      if (!err.status_code) {
-        err.status_code = 500;
+      if (!err.statusCode) {
+        err.statusCode = 500;
       }
       next(err);
     });

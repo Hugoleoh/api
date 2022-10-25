@@ -5,6 +5,7 @@ const endpointsFiles = [
   "./src/controllers/auth.js",
   "./src/controllers/user.js",
   "./src/controllers/poll.js",
+  "./src/controllers/question.js",
 ];
 
 const doc = {
@@ -31,6 +32,14 @@ const doc = {
     {
       name: "Auth",
       description: "User authentication",
+    },
+    {
+      name: "Poll",
+      description: "API for Polls in the system",
+    },
+    {
+      name: "Question",
+      description: "API for Questions in the system",
     },
   ],
   securityDefinitions: {
@@ -66,6 +75,17 @@ const doc = {
       createdAt: "2022-01-01 00:00:00",
       updatedAt: "2022-01-01 00:00:00",
       userId: 1,
+    },
+    Question: {
+      id: 1,
+      name: "teste",
+      description: "Descrição",
+      type: 1,
+      activated: 1,
+      num_options: 4,
+      createdAt: "2022-01-01 00:00:00",
+      updatedAt: "2022-01-01 00:00:00",
+      pollId: 1,
     },
   },
 };

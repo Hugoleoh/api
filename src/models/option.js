@@ -14,7 +14,7 @@ const Option = sequelize.define("option", {
     allowNull: false,
   },
   type: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
   description: {
