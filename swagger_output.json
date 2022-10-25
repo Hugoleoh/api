@@ -19,6 +19,14 @@
     {
       "name": "Auth",
       "description": "User authentication"
+    },
+    {
+      "name": "Poll",
+      "description": "API for Polls in the system"
+    },
+    {
+      "name": "Question",
+      "description": "API for Questions in the system"
     }
   ],
   "schemes": [
@@ -57,6 +65,9 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "422": {
             "description": "Falha na validação"
           }
@@ -92,7 +103,6 @@
         ],
         "responses": {
           "200": {
-            "description": "Usuário autenticado.",
             "schema": {
               "type": "object",
               "properties": {
@@ -108,7 +118,8 @@
               "xml": {
                 "name": "main"
               }
-            }
+            },
+            "description": "Usuário autenticado."
           },
           "401": {
             "description": "Não autorizado"
@@ -413,6 +424,146 @@
           }
         }
       }
+    },
+    "/questions/{pollId}/all": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Endpoint para mostrar todas questões de uma votação de um usuário.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/question"
+            },
+            "description": "Questões buscadas."
+          },
+          "404": {
+            "description": "Questões não encontradas."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/questions/getQuestion/{questionId}": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Endpoint para buscar uma questão.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da questão."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/question"
+            },
+            "description": "Questão buscada."
+          },
+          "404": {
+            "description": "Questão não encontrada."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/questions/create": {
+      "post": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Endpoint para criar uma votação.",
+        "parameters": [
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Informações da votação.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/question"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/questions/edit/{questionId}": {
+      "put": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Endpoint para editar uma Questão.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Informações da Questão.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/question"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          }
+        }
+      }
+    },
+    "/questions/delete/{questionId}": {
+      "delete": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Endpoint para deletar uma questão.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da questão."
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Questão não encontrada."
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -509,6 +660,47 @@
           "example": "2022-01-01 00:00:00"
         },
         "userId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "teste"
+        },
+        "description": {
+          "type": "string",
+          "example": "Descrição"
+        },
+        "type": {
+          "type": "number",
+          "example": 1
+        },
+        "activated": {
+          "type": "number",
+          "example": 1
+        },
+        "num_options": {
+          "type": "number",
+          "example": 4
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "pollId": {
           "type": "number",
           "example": 1
         }
