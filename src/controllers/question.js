@@ -1,4 +1,5 @@
 const Question = require("../models/question");
+const OptionService = require("../services/optionService");
 
 exports.getMyPollQuestions = (req, res, next) => {
   /* #swagger.start
@@ -259,6 +260,13 @@ exports.deleteQuestion = (req, res, next) => {
         throw error;
       }
       question.activated = false;
+      try {
+        OptionService.deleteOptionsOnCascade(question.id);
+      } catch (err) {
+        const error = new Error("Could not delete this question options");
+        error.statusCode = 400;
+        throw error;
+      }
       question.save();
     })
     .then((result) => {
