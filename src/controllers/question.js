@@ -120,31 +120,19 @@ exports.createQuestion = (req, res, next) => {
   const type = req.body.type;
   const description = req.body.description;
   const pollId = req.body.pollId;
-  const userId = req.body.userId;
-  if (userId != req.userId) {
-    /* 
-      #swagger.responses[403] = { 
-        description: 'Não autorizado' 
-      }  
-    */
-    const error = new Error("Forbidden.");
-    error.statusCode = 403;
-    throw error;
-  }
   Question.create({
     name: name,
     type: type,
     description: description,
     pollId: pollId,
-    userId: userId,
   })
     .then((result) => {
       /* 
         #swagger.responses[201] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/question" 
           }
-          description: 'Votação criado.' 
+          description: 'Questão criada.' 
         }  
       */
       res
