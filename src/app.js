@@ -26,6 +26,9 @@ app.use("/polls", pollRoutes);
 const questionRoutes = require("./routes/question");
 app.use("/questions", questionRoutes);
 
+const optionRoutes = require("./routes/option");
+app.use("/options", optionRoutes);
+
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
 
