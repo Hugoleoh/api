@@ -1,4 +1,5 @@
 const Poll = require("../models/poll");
+const QuestionService = require("../services/questionService");
 
 exports.getAllMyPolls = (req, res, next) => {
   /* #swagger.start
@@ -282,6 +283,13 @@ exports.deletePoll = (req, res, next) => {
         */
         const error = new Error("Forbidden.");
         error.statusCode = 403;
+        throw error;
+      }
+      try {
+        QuestionService.deleteQuestionsOnCascade(poll.id);
+      } catch (err) {
+        const error = new Error("Could not delete this poll questions");
+        error.statusCode = 400;
         throw error;
       }
       poll.activated = false;
