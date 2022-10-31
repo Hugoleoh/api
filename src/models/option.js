@@ -17,6 +17,10 @@ const Option = sequelize.define("option", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  votes_count: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
   description: {
     type: Sequelize.STRING,
     allowNull: false,

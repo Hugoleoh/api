@@ -35,12 +35,15 @@ app.use("/auth", authRoutes);
 const userRoutes = require("./routes/user");
 app.use("/users", userRoutes);
 
+const voterRoutes = require("./routes/voter");
+app.use("/voters", voterRoutes);
+
 (async () => {
   const Poll = require("./models/poll");
   const Option = require("./models/option");
   const Question = require("./models/question");
   const User = require("./models/user");
-  const Vote = require("./models/vote");
+  const WriteInAnswer = require("./models/writeInAnswer");
   const Voter = require("./models/voter");
 
   Poll.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
@@ -55,8 +58,8 @@ app.use("/users", userRoutes);
   Voter.belongsTo(Poll, { constraints: true, onDelete: "CASCADE" });
   Poll.hasMany(Voter);
 
-  Vote.belongsTo(Option, { constraints: true, onDelete: "CASCADE" });
-  Option.hasMany(Vote);
+  WriteInAnswer.belongsTo(Option, { constraints: true, onDelete: "CASCADE" });
+  Option.hasMany(WriteInAnswer);
   await database.sync({});
 })();
 

@@ -1,6 +1,6 @@
 const User = require("../models/user");
 module.exports = {
-  checkEmailAvailability: function (req, res, next) {
+  checkEmailAvailability: function (req, _res, next) {
     User.findOne({ where: { email: req.body.email } })
       .then((user) => {
         if (user) {
@@ -18,7 +18,7 @@ module.exports = {
         next(err);
       });
   },
-  checkUsernameAvailability: function (req, res, next) {
+  checkUsernameAvailability: function (req, _res, next) {
     User.findOne({ where: { username: req.body.username } })
       .then((user) => {
         if (user) {
@@ -36,7 +36,7 @@ module.exports = {
         next(err);
       });
   },
-  checkCpfAvailability: function (req, res, next) {
+  checkCpfAvailability: function (req, _res, next) {
     User.findOne({ where: { cpf: req.body.cpf } })
       .then((user) => {
         if (user) {
