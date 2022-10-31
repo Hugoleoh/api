@@ -7,6 +7,7 @@ const endpointsFiles = [
   "./src/controllers/poll.js",
   "./src/controllers/question.js",
   "./src/controllers/option.js",
+  "./src/controllers/voter.js",
 ];
 
 const doc = {
@@ -46,6 +47,10 @@ const doc = {
       name: "Options",
       description: "API for Options in the system",
     },
+    {
+      name: "Voters",
+      description: "API for Voters in the system",
+    },
   ],
   securityDefinitions: {
     api_key: {
@@ -72,6 +77,7 @@ const doc = {
       title: "teste",
       initial_date: "2022-01-01 00:00:00",
       end_date: "2022-01-02 00:00:00",
+      privacy: 1,
       sharing_url: "/s9Xjk23Ac",
       description: "Descrição",
       started: 0,
@@ -97,10 +103,23 @@ const doc = {
       name: "teste",
       description: "Descrição",
       type: 1,
+      votes_count: 1,
       activated: 1,
       createdAt: "2022-01-01 00:00:00",
       updatedAt: "2022-01-01 00:00:00",
       questionId: 1,
+    },
+    Voter: {
+      id: 1,
+      name: "Jane",
+      email: "email@email.com",
+      voter_key: "L25WNC0A",
+      vote_weight: 1,
+      has_voted: true,
+      activated: 1,
+      createdAt: "2022-01-01 00:00:00",
+      updatedAt: "2022-01-01 00:00:00",
+      pollId: 1,
     },
   },
 };

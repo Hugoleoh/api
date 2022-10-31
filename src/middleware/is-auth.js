@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-module.exports = (req, res, next) => {
+module.exports = (req, _res, next) => {
   const header = req.get("Authorization");
   if (!header) {
     const error = new Error("No headers in request");

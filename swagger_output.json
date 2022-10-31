@@ -31,6 +31,10 @@
     {
       "name": "Options",
       "description": "API for Options in the system"
+    },
+    {
+      "name": "Voters",
+      "description": "API for Voters in the system"
     }
   ],
   "schemes": [
@@ -107,6 +111,7 @@
         ],
         "responses": {
           "200": {
+            "description": "Usuário autenticado.",
             "schema": {
               "type": "object",
               "properties": {
@@ -122,8 +127,7 @@
               "xml": {
                 "name": "main"
               }
-            },
-            "description": "Usuário autenticado."
+            }
           },
           "401": {
             "description": "Não autorizado"
@@ -700,6 +704,79 @@
           }
         }
       }
+    },
+    "/voters/{pollId}": {
+      "get": {
+        "tags": [
+          "Voters"
+        ],
+        "description": "Endpoint para mostrar todos votantes de uma votação de um usuário.",
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da votação."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Votantes buscados.",
+            "schema": {
+              "$ref": "#/definitions/Voter"
+            }
+          },
+          "404": {
+            "description": "Votantes não encontrados."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/voters/add": {
+      "post": {
+        "tags": [
+          "Voters"
+        ],
+        "description": "Endpoint para adicionar um votante.",
+        "parameters": [
+          {
+            "name": "voter",
+            "in": "body",
+            "description": "Informações da votação.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Voter"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/voters/remove/{voterId}": {
+      "delete": {
+        "tags": [
+          "Voters"
+        ],
+        "description": "Endpoint para remvover um votante.",
+        "parameters": [
+          {
+            "name": "voterId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do votante."
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Votante não encontrado."
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -766,6 +843,10 @@
         "end_date": {
           "type": "string",
           "example": "2022-01-02 00:00:00"
+        },
+        "privacy": {
+          "type": "number",
+          "example": 1
         },
         "sharing_url": {
           "type": "string",
@@ -861,6 +942,10 @@
           "type": "number",
           "example": 1
         },
+        "votes_count": {
+          "type": "number",
+          "example": 1
+        },
         "activated": {
           "type": "number",
           "example": 1
@@ -874,6 +959,51 @@
           "example": "2022-01-01 00:00:00"
         },
         "questionId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "Voter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Jane"
+        },
+        "email": {
+          "type": "string",
+          "example": "email@email.com"
+        },
+        "voter_key": {
+          "type": "string",
+          "example": "L25WNC0A"
+        },
+        "vote_weight": {
+          "type": "number",
+          "example": 1
+        },
+        "has_voted": {
+          "type": "boolean",
+          "example": true
+        },
+        "activated": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "pollId": {
           "type": "number",
           "example": 1
         }

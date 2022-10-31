@@ -112,6 +112,7 @@ exports.createPoll = (req, res, next) => {
   const title = req.body.title;
   const initial_date = req.body.initial_date;
   const end_date = req.body.end_date;
+  const privacy = req.body.privacy;
   const description = req.body.description;
   const userId = req.body.userId;
   if (userId != req.userId) {
@@ -128,6 +129,7 @@ exports.createPoll = (req, res, next) => {
     title: title,
     initial_date: initial_date,
     end_date: end_date,
+    privacy: privacy,
     description: description,
     userId: userId,
   })
@@ -177,6 +179,7 @@ exports.editPoll = (req, res, next) => {
   const title = req.body.title;
   const initial_date = req.body.initial_date;
   const end_date = req.body.end_date;
+  const privacy = req.body.privacy;
   const description = req.body.description;
 
   Poll.findOne({
@@ -219,6 +222,7 @@ exports.editPoll = (req, res, next) => {
       poll.title = title;
       poll.initial_date = initial_date;
       poll.end_date = end_date;
+      poll.privacy = privacy;
       poll.description = description;
       return poll.save();
     })

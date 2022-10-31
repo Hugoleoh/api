@@ -21,6 +21,10 @@ const Poll = sequelize.define("poll", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  privacy: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   finished: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,

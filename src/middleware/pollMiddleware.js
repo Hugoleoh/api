@@ -1,6 +1,6 @@
 const Poll = require("../models/poll");
 module.exports = {
-  checkPollAvailability: function (req, res, next) {
+  checkPollAvailability: function (req, _res, next) {
     try {
       if (!req.body.pollId) {
         const error = new Error("Invalid poll ID");
@@ -13,10 +13,7 @@ module.exports = {
             const error = new Error("Poll does not exist.");
             error.statusCode = 404;
             throw error;
-          } else if (
-            (poll.started && !poll.finished) ||
-            poll.userId != req.userId
-          ) {
+          } else if (poll.started || poll.userId != req.userId) {
             const error = new Error("Poll not available");
             error.statusCode = 403;
             throw error;

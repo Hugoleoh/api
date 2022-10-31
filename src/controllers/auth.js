@@ -68,7 +68,7 @@ exports.register = (req, res, next) => {
           userId: result.id.toString(),
         },
         "1b93823c3837425690b259976639b5753644ca67",
-        { expiresIn: "1000h" }
+        { expiresIn: ONE_HOUR }
       );
       res.status(201).json({
         message: "User registered successfully",
@@ -141,14 +141,13 @@ exports.login = (req, res, next) => {
             error.statusCode = 401;
             throw error;
           }
-          const expiresIn = ONE_YEAR;
           const token = jwt.sign(
             {
               username: found_user.username,
               userId: found_user.id.toString(),
             },
             "1b93823c3837425690b259976639b5753644ca67",
-            { expiresIn: expiresIn }
+            { expiresIn: ONE_HOUR }
           );
           /* 
           #swagger.responses[200] = { 

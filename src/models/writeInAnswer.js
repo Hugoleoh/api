@@ -2,17 +2,17 @@ const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
 
-const Vote = sequelize.define("vote", {
+const WriteInAnswer = sequelize.define("write_in_answer", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  date: {
-    type: Sequelize.DATE,
+  answer: {
+    type: Sequelize.TEXT,
     allowNull: false,
   },
 });
 
-module.exports = Vote;
+module.exports = WriteInAnswer;

@@ -21,9 +21,6 @@ const Question = sequelize.define("question", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  num_options: {
-    type: Sequelize.INTEGER,
-  },
   activated: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
