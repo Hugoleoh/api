@@ -25,7 +25,7 @@ exports.getMyQuestionOptions = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/option"   
+           $ref: "#/definitions/Option"   
           },
           description: 'Opções buscadas.' 
         }  
@@ -76,7 +76,7 @@ exports.getOption = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/option"   
+           $ref: "#/definitions/Option"   
           },
           description: 'Opção buscada.' 
         }  
@@ -108,7 +108,7 @@ exports.createOption = (req, res, next) => {
     description: 'Informações da questão.',
     required: true,
     schema: { 
-      $ref: "#/definitions/option" 
+      $ref: "#/definitions/Option" 
     }
   } 
   */
@@ -126,7 +126,7 @@ exports.createOption = (req, res, next) => {
       /* 
         #swagger.responses[201] = { 
           schema: { 
-            $ref: "#/definitions/option" 
+            $ref: "#/definitions/Option" 
           }
           description: 'Opção criada.' 
         }  
@@ -160,7 +160,7 @@ exports.editOption = (req, res, next) => {
       description: 'Informações da Opção.',
       required: true,
       schema: { 
-        $ref: "#/definitions/option" 
+        $ref: "#/definitions/Option" 
       }
     }   
   */
@@ -205,7 +205,7 @@ exports.editOption = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/option" 
+            $ref: "#/definitions/Option" 
           }
           description: 'Opção editada.' 
         }  
@@ -261,7 +261,7 @@ exports.deleteOption = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/option" 
+            $ref: "#/definitions/Option" 
           }
           description: 'Opção deletada.' 
         }  

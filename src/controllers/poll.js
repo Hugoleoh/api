@@ -23,7 +23,7 @@ exports.getAllMyPolls = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/poll"   
+           $ref: "#/definitions/Poll"   
           },
           description: 'Votações buscadas.' 
         }  
@@ -73,7 +73,7 @@ exports.getPoll = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/poll"   
+           $ref: "#/definitions/Poll"   
           },
           description: 'Votação buscada.' 
         }  
@@ -105,7 +105,7 @@ exports.createPoll = (req, res, next) => {
     description: 'Informações da votação.',
     required: true,
     schema: { 
-      $ref: "#/definitions/poll" 
+      $ref: "#/definitions/Poll" 
     }
   } 
   */
@@ -135,7 +135,7 @@ exports.createPoll = (req, res, next) => {
       /* 
         #swagger.responses[201] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/Poll" 
           }
           description: 'Votação criado.' 
         }  
@@ -169,7 +169,7 @@ exports.editPoll = (req, res, next) => {
       description: 'Informações da votação.',
       required: true,
       schema: { 
-        $ref: "#/definitions/poll" 
+        $ref: "#/definitions/Poll" 
       }
     }   
   */
@@ -226,7 +226,7 @@ exports.editPoll = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/Poll" 
           }
           description: 'Votação editado.' 
         }  
@@ -299,7 +299,7 @@ exports.deletePoll = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/Poll" 
           }
           description: 'Votação deletado.' 
         }  
@@ -376,7 +376,7 @@ exports.startPoll = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/Poll" 
           }
           description: 'Votação inciada.' 
         }  
@@ -453,7 +453,7 @@ exports.finishPoll = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/poll" 
+            $ref: "#/definitions/Poll" 
           }
           description: 'Votação finalizada.' 
         }  
