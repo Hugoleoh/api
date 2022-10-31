@@ -26,7 +26,7 @@ exports.getMyPollQuestions = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/question"   
+           $ref: "#/definitions/Question"   
           },
           description: 'Questões buscadas.' 
         }  
@@ -79,7 +79,7 @@ exports.getQuestion = (req, res, next) => {
       /* 
           #swagger.responses[200] = { 
           schema: {
-           $ref: "#/definitions/question"   
+           $ref: "#/definitions/Question"   
           },
           description: 'Questão buscada.' 
         }  
@@ -113,7 +113,7 @@ exports.createQuestion = (req, res, next) => {
     description: 'Informações da votação.',
     required: true,
     schema: { 
-      $ref: "#/definitions/question" 
+      $ref: "#/definitions/Question" 
     }
   } 
   */
@@ -131,7 +131,7 @@ exports.createQuestion = (req, res, next) => {
       /* 
         #swagger.responses[201] = { 
           schema: { 
-            $ref: "#/definitions/question" 
+            $ref: "#/definitions/Question" 
           }
           description: 'Questão criada.' 
         }  
@@ -165,7 +165,7 @@ exports.editQuestion = (req, res, next) => {
       description: 'Informações da Questão.',
       required: true,
       schema: { 
-        $ref: "#/definitions/question" 
+        $ref: "#/definitions/Question" 
       }
     }   
   */
@@ -210,7 +210,7 @@ exports.editQuestion = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/question" 
+            $ref: "#/definitions/Question" 
           }
           description: 'Questão editado.' 
         }  
@@ -273,7 +273,7 @@ exports.deleteQuestion = (req, res, next) => {
       /* 
         #swagger.responses[200] = { 
           schema: { 
-            $ref: "#/definitions/question" 
+            $ref: "#/definitions/Question" 
           }
           description: 'Questão deletado.' 
         }  

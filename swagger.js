@@ -35,15 +35,15 @@ const doc = {
       description: "User authentication",
     },
     {
-      name: "Poll",
+      name: "Polls",
       description: "API for Polls in the system",
     },
     {
-      name: "Question",
+      name: "Questions",
       description: "API for Questions in the system",
     },
     {
-      name: "Option",
+      name: "Options",
       description: "API for Options in the system",
     },
   ],

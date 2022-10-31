@@ -21,12 +21,16 @@
       "description": "User authentication"
     },
     {
-      "name": "Poll",
+      "name": "Polls",
       "description": "API for Polls in the system"
     },
     {
-      "name": "Question",
+      "name": "Questions",
       "description": "API for Questions in the system"
+    },
+    {
+      "name": "Options",
+      "description": "API for Options in the system"
     }
   ],
   "schemes": [
@@ -241,7 +245,7 @@
           "200": {
             "description": "Votações buscadas.",
             "schema": {
-              "$ref": "#/definitions/poll"
+              "$ref": "#/definitions/Poll"
             }
           },
           "404": {
@@ -271,7 +275,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/poll"
+              "$ref": "#/definitions/Poll"
             },
             "description": "Votação buscada."
           },
@@ -297,7 +301,7 @@
             "description": "Informações da votação.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/poll"
+              "$ref": "#/definitions/Poll"
             }
           }
         ],
@@ -327,7 +331,7 @@
             "description": "Informações da votação.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/poll"
+              "$ref": "#/definitions/Poll"
             }
           }
         ],
@@ -442,7 +446,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/question"
+              "$ref": "#/definitions/Question"
             },
             "description": "Questões buscadas."
           },
@@ -473,7 +477,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/question"
+              "$ref": "#/definitions/Question"
             },
             "description": "Questão buscada."
           },
@@ -499,15 +503,11 @@
             "description": "Informações da votação.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/question"
+              "$ref": "#/definitions/Question"
             }
           }
         ],
-        "responses": {
-          "403": {
-            "description": "Não autorizado"
-          }
-        }
+        "responses": {}
       }
     },
     "/questions/edit/{questionId}": {
@@ -529,7 +529,7 @@
             "description": "Informações da Questão.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/question"
+              "$ref": "#/definitions/Question"
             }
           }
         ],
@@ -561,6 +561,142 @@
         "responses": {
           "404": {
             "description": "Questão não encontrada."
+          }
+        }
+      }
+    },
+    "/options/{questionId}/all": {
+      "get": {
+        "tags": [
+          "Options"
+        ],
+        "description": "Endpoint para mostrar todas opções de uma questão de um usuário.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opções buscadas.",
+            "schema": {
+              "$ref": "#/definitions/Option"
+            }
+          },
+          "404": {
+            "description": "Opções não encontradas."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/options/getOption/{optionId}": {
+      "get": {
+        "tags": [
+          "Options"
+        ],
+        "description": "Endpoint para buscar uma questão.",
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da questão."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Option"
+            },
+            "description": "Opção buscada."
+          },
+          "404": {
+            "description": "Questão não encontrada."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/options/create": {
+      "post": {
+        "tags": [
+          "Options"
+        ],
+        "description": "Endpoint para criar uma opção de uma questão.",
+        "parameters": [
+          {
+            "name": "option",
+            "in": "body",
+            "description": "Informações da questão.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Option"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/options/edit/{optionId}": {
+      "put": {
+        "tags": [
+          "Options"
+        ],
+        "description": "Endpoint para editar uma Opção de uma questão.",
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "option",
+            "in": "body",
+            "description": "Informações da Opção.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Option"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          }
+        }
+      }
+    },
+    "/options/delete/{optionId}": {
+      "delete": {
+        "tags": [
+          "Options"
+        ],
+        "description": "Endpoint para deletar uma opção de uma questão.",
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da opção."
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Opção não encontrada."
           }
         }
       }
@@ -701,6 +837,43 @@
           "example": "2022-01-01 00:00:00"
         },
         "pollId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "Option": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "teste"
+        },
+        "description": {
+          "type": "string",
+          "example": "Descrição"
+        },
+        "type": {
+          "type": "number",
+          "example": 1
+        },
+        "activated": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-01-01 00:00:00"
+        },
+        "questionId": {
           "type": "number",
           "example": 1
         }
