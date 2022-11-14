@@ -38,6 +38,9 @@ app.use("/users", userRoutes);
 const voterRoutes = require("./routes/voter");
 app.use("/voters", voterRoutes);
 
+const voteRoutes = require("./routes/vote");
+app.use("/votes", voteRoutes);
+
 (async () => {
   const Poll = require("./models/poll");
   const Option = require("./models/option");
@@ -65,7 +68,7 @@ app.use("/voters", voterRoutes);
 
 app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.use((error, req, res, next) => {
+app.use((error, _req, res, _next) => {
   res
     .status(error.statusCode)
     .json({ message: error.message || "Internal server error" });

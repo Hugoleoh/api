@@ -141,13 +141,14 @@ exports.login = (req, res, next) => {
             error.statusCode = 401;
             throw error;
           }
+          const expiresIn = ONE_HOUR;
           const token = jwt.sign(
             {
               username: found_user.username,
               userId: found_user.id.toString(),
             },
             "1b93823c3837425690b259976639b5753644ca67",
-            { expiresIn: ONE_HOUR }
+            { expiresIn: expiresIn }
           );
           /* 
           #swagger.responses[200] = { 
