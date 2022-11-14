@@ -14,7 +14,7 @@ router.post(
   "/add",
   isAuth,
   middlePoll.checkPollAvailability,
-  middleVoter.checkVoter,
+  middleVoter.checkAddVoter,
   voterController.addVoter
 );
 

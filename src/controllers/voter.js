@@ -68,12 +68,12 @@ exports.addVoter = (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
   const vote_weight = req.body.vote_weight;
+  const pollId = req.body.pollId;
   const voter_key = crypto
     .createHash("shake256", { outputLength: 4 })
-    .update(email)
+    .update(email + pollId)
     .digest("hex")
     .toUpperCase();
-  const pollId = req.body.pollId;
   Voter.create({
     name: name,
     email: email,

@@ -35,6 +35,10 @@
     {
       "name": "Voters",
       "description": "API for Voters in the system"
+    },
+    {
+      "name": "Votes",
+      "description": "API for adding a vote in the system"
     }
   ],
   "schemes": [
@@ -261,6 +265,37 @@
         }
       }
     },
+    "/polls/getPoll/{sharing_url}": {
+      "get": {
+        "tags": [
+          "Polls"
+        ],
+        "description": "Endpoint para buscar uma votação a partir da url compartilhável.",
+        "parameters": [
+          {
+            "name": "sharing_url",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "URL compartilhável da votação."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Poll"
+            },
+            "description": "Votação buscada."
+          },
+          "404": {
+            "description": "Votação não encontrada."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/polls/getPoll/{pollId}": {
       "get": {
         "tags": [
@@ -392,17 +427,7 @@
             "description": "ID da votação."
           }
         ],
-        "responses": {
-          "403": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Votação não encontrada."
-          },
-          "422": {
-            "description": "Não é possível editar uma votação iniciada."
-          }
-        }
+        "responses": {}
       }
     },
     "/polls/finish/{pollId}": {
@@ -427,8 +452,8 @@
           "404": {
             "description": "Votação não encontrada."
           },
-          "422": {
-            "description": "Não é possível editar uma votação iniciada."
+          "409": {
+            "description": "Votação já finalizada."
           }
         }
       }
@@ -774,6 +799,23 @@
         "responses": {
           "404": {
             "description": "Votante não encontrado."
+          }
+        }
+      }
+    },
+    "/vote/add": {
+      "post": {
+        "tags": [
+          "Votes"
+        ],
+        "description": "Endpoint para adicionar um voto a uma opção.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Opção não encontrada."
           }
         }
       }

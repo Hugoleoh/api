@@ -8,6 +8,7 @@ const endpointsFiles = [
   "./src/controllers/question.js",
   "./src/controllers/option.js",
   "./src/controllers/voter.js",
+  "./src/controllers/vote.js",
 ];
 
 const doc = {
@@ -50,6 +51,10 @@ const doc = {
     {
       name: "Voters",
       description: "API for Voters in the system",
+    },
+    {
+      name: "Votes",
+      description: "API for adding a vote in the system",
     },
   ],
   securityDefinitions: {

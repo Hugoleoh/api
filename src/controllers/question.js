@@ -1,4 +1,5 @@
 const Question = require("../models/question");
+const Option = require("../models/option");
 const OptionService = require("../services/optionService");
 
 exports.getMyPollQuestions = (req, res, next) => {
@@ -11,6 +12,14 @@ exports.getMyPollQuestions = (req, res, next) => {
   const pollId = req.params.pollId;
   Question.findAll({
     where: { pollId: pollId, activated: true },
+    include: {
+      model: Option,
+      as: "options",
+      where: {
+        activated: true,
+      },
+      required: false,
+    },
   })
     .then((questions) => {
       if (!questions) {
@@ -63,6 +72,14 @@ exports.getQuestion = (req, res, next) => {
     where: {
       id: questionId,
       activated: true,
+    },
+    include: {
+      model: Option,
+      as: "options",
+      where: {
+        activated: true,
+      },
+      required: false,
     },
   })
     .then((question) => {
