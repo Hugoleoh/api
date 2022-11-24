@@ -2,6 +2,17 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
+const sendGridTransport = require("nodemailer-sendgrid-transport");
+
+const transporter = nodemailer.createTransport(
+  sendGridTransport({
+    auth: {
+      api_key:
+        "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",
+    },
+  })
+);
 const ONE_HOUR = 3600000;
 const ONE_YEAR = 31557600000;
 
@@ -62,18 +73,24 @@ exports.register = (req, res, next) => {
           description: 'Usuário criado.' 
         }  
       */
-      const token = jwt.sign(
+      /* const token = jwt.sign(
         {
           username: result.username,
           userId: result.id.toString(),
         },
         "1b93823c3837425690b259976639b5753644ca67",
         { expiresIn: ONE_HOUR }
-      );
+      ); */
+      transporter.sendMail({
+        to: email,
+        from: "hugo.mata@ufv.br",
+        subject: "Seja bem-vindo ao Pollar",
+        html: "<h1>Você se cadastrou com sucesso!</h1>",
+      });
       res.status(201).json({
         message: "User registered successfully",
         userId: result.id,
-        token: token,
+        //token: token,
       });
     })
     .catch((err) => {
