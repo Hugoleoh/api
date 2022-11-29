@@ -38,4 +38,6 @@ router.patch(
 
 router.patch("/finish/:pollId", isAuth, pollController.finishPoll);
 
+router.patch("/generate/url/:pollId", isAuth, pollController.generateURL);
+
 module.exports = router;

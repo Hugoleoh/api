@@ -127,6 +127,22 @@ exports.getPollById = (req, res, next) => {
       id: pollId,
       activated: true,
     },
+    include: {
+      model: Question,
+      as: "questions",
+      where: {
+        activated: true,
+      },
+      required: false,
+      include: {
+        model: Option,
+        as: "options",
+        where: {
+          activated: true,
+        },
+        required: false,
+      },
+    },
   })
     .then((polls) => {
       if (!polls) {
@@ -406,10 +422,12 @@ exports.startPoll = (req, res, next) => {
   const poll = req.poll;
   if (poll.initial_date < Date.now()) poll.initial_date = new Date();
   poll.started = true;
-  poll.sharing_url = crypto
-    .createHash("shake256", { outputLength: 4 })
-    .update(poll.id + new Date())
-    .digest("hex");
+  if (poll.sharing_url == null) {
+    poll.sharing_url = crypto
+      .createHash("shake256", { outputLength: 4 })
+      .update(poll.id + new Date())
+      .digest("hex");
+  }
   poll
     .save()
     .then((result) => {
@@ -424,6 +442,66 @@ exports.startPoll = (req, res, next) => {
       res
         .status(200)
         .json({ message: "Poll started successfully.", pollId: result.id });
+    })
+    .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+  // #swagger.end
+};
+
+exports.generateURL = (req, res, next) => {
+  /* #swagger.start
+    #swagger.path = '/polls/generate/url/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'patch'
+    #swagger.description = 'Endpoint para abrir uma votação para votos.' 
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
+  const pollId = req.params.pollId;
+  Poll.findOne({
+    where: {
+      id: pollId,
+      activated: true,
+    },
+  })
+    .then((poll) => {
+      if (!poll) {
+        /* 
+          #swagger.responses[404] = { 
+          description: 'Votação não encontrada.' 
+        }  
+        */
+        const error = new Error("Poll not find.");
+        error.statusCode = 404;
+        throw error;
+      }
+      poll.sharing_url = crypto
+        .createHash("shake256", { outputLength: 4 })
+        .update(poll.id + new Date())
+        .digest("hex");
+      poll.save().then((result) => {
+        /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/Poll" 
+          }
+          description: 'Votação inciada.' 
+        }  
+      */
+        console.log(result);
+        res.status(200).json({
+          message: "Sharing URL generated successfully.",
+          url: result.sharing_url,
+        });
+      });
     })
     .catch((err) => {
       /* 
