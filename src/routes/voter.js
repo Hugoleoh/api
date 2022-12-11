@@ -13,7 +13,6 @@ router.get("/:pollId", isAuth, voterController.getMyPollVoters);
 router.post(
   "/add",
   isAuth,
-  middlePoll.checkPollAvailability,
   middleVoter.checkAddVoter,
   voterController.addVoter
 );

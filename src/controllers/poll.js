@@ -457,6 +457,47 @@ exports.startPoll = (req, res, next) => {
   // #swagger.end
 };
 
+exports.updateDates = (req, res, next) => {
+  /* #swagger.start
+    #swagger.path = '/polls/start/{pollId}'
+    #swagger.tags = ['Polls']
+    #swagger.method = 'patch'
+    #swagger.description = 'Endpoint para abrir uma votação para votos.' 
+    #swagger.parameters['pollId'] = { description: 'ID da votação.' }  
+  */
+  const poll = req.poll;
+  poll.initial_date = req.body.initial_date;
+  poll.end_date = req.body.end_date;
+
+  poll
+    .save()
+    .then((result) => {
+      /* 
+        #swagger.responses[200] = { 
+          schema: { 
+            $ref: "#/definitions/Poll" 
+          }
+          description: 'Datas atualizadas.' 
+        }  
+      */
+      res
+        .status(200)
+        .json({ message: "Poll dates updated successfully", poll: result });
+    })
+    .catch((err) => {
+      /* 
+        #swagger.responses[500] = { 
+          description: 'Server error' 
+        }  
+      */
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+  // #swagger.end
+};
+
 exports.generateURL = (req, res, next) => {
   /* #swagger.start
     #swagger.path = '/polls/generate/url/{pollId}'
