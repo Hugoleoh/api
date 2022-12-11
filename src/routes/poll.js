@@ -15,12 +15,7 @@ router.get("/getPollByUrl/:sharing_url", pollController.getPollByUrl);
 
 router.post("/create", isAuth, pollController.createPoll);
 
-router.put(
-  "/edit/:pollId",
-  middlePoll.checkPollAvailability,
-  isAuth,
-  pollController.editPoll
-);
+router.put("/edit/:pollId", isAuth, pollController.editPoll);
 
 router.delete(
   "/delete/:pollId",
