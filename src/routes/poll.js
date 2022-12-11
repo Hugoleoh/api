@@ -33,11 +33,19 @@ router.patch(
   "/start/:pollId",
   isAuth,
   middlePoll.checkPollStartConditions,
+  middlePoll.checkPollNeedVoters,
   pollController.startPoll
 );
 
 router.patch("/finish/:pollId", isAuth, pollController.finishPoll);
 
 router.patch("/generate/url/:pollId", isAuth, pollController.generateURL);
+
+router.patch(
+  "/update/dates/:pollId",
+  isAuth,
+  middlePoll.checkPollAvailability,
+  pollController.updateDates
+);
 
 module.exports = router;
