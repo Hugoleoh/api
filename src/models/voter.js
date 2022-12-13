@@ -29,6 +29,10 @@ const Voter = sequelize.define("voter", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  voted_at: {
+    type: Sequelize.DATE,
+    allowNull: true,
+  },
   activated: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
