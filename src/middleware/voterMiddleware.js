@@ -50,6 +50,7 @@ module.exports = {
           case PUBLIC:
             if (!voter || (voter && !voter.has_voted)) {
               // Technical debt
+              const name = req.body.name;
               const email = req.body.email;
               const voter_key = crypto
                 .createHash("shake256", { outputLength: 4 })
@@ -58,6 +59,7 @@ module.exports = {
                 .toUpperCase();
               const pollId = req.poll.id;
               const voter = await Voter.create({
+                name: name,
                 email: email,
                 voter_key: voter_key,
                 pollId: pollId,

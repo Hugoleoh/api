@@ -55,6 +55,15 @@ module.exports = {
             const error = new Error("Poll not available");
             error.statusCode = 403;
             throw error;
+          } else if (
+            poll.initial_date > Date.now() ||
+            poll.end_date < Date.now()
+          ) {
+            const error = new Error(
+              "Voting period has ended or not started yet for this poll"
+            );
+            error.statusCode = 428;
+            throw error;
           } else {
             req.poll = poll;
             next();
