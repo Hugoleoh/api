@@ -36,6 +36,8 @@ router.put(
   userController.edit
 );
 
+router.patch("/password/change/:userId", isAuth, userController.changePassword);
+
 router.get("/profile/:userId", isAuth, userController.getProfile);
 
 module.exports = router;
