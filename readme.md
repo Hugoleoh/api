@@ -6,8 +6,8 @@ Passo 1 - Clonagem do repositório com o comando "git clone https://github.com/H
 
 Passo 2 - Criar um arquivo chamado ".env" na raiz do projeto com o seguinte conteúdo:
 
-MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=True
 # Database config
+MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=True
 DB_HOST=pollar-database
 DB_PORT=3306
 DB_USER=root
