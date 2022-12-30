@@ -7,6 +7,7 @@ Passo 1 - Clonagem do repositório com o comando "git clone https://github.com/H
 Passo 2 - Criar um arquivo chamado ".env" na raiz do projeto com o seguinte conteúdo:
 
 # Database config
+``````````
 MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=True
 DB_HOST=pollar-database
 DB_PORT=3306
@@ -14,11 +15,13 @@ DB_USER=root
 DB_PASSWORD=''
 DB_NAME=pollar
 
-COM DOCKER
+``````````
+
+### COM DOCKER
 
 Passo 3 -  Tendo o docker instalado na máquina (https://docs.docker.com/get-docker/), rodar o comando "docker compose up", no linux "sudo docker compose up", no diretório do projeto. O docker criará automaticamente o banco de dados do projeto e iniciará a execução da api na porta 3000.
 
-SEM DOCKER
+### SEM DOCKER
 
 Passo 3 -  Sem o docker será necessário ter o npm e o node instalados na máquina (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
